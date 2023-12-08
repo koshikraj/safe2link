@@ -1,0 +1,34 @@
+:root {
+  --header-height: 60px;
+  --quick-nav-display: none;
+  --component-highlights-item-width: calc(100vw - 100px);
+  --developer-experience-code-window-background: var(--slate-12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--gray-12);
+  -webkit-text-size-adjust: 100%;
+}
+
+svg {
+  display: block;
+  vertical-align: middle;
+  overflow: visible;
+}
+
+ul {
+  padding-inline-start: 0;
+}
+
+#__next {
+  position: relative;
+  z-index: 0;
+}
