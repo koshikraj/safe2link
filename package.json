@@ -7,8 +7,6 @@
     "dev": "next dev",
     "format": "prettier --log-level warn --write .",
     "format:check": "prettier --check .",
-    "lint": "next lint --fix",
-    "lint:check": "next lint",
     "start": "next start",
     "test": "yarn jest .",
     "test:coverage": "yarn jest . --coverage"
@@ -49,7 +47,6 @@
     "@typescript-eslint/utils": "^5.54.1",
     "autoprefixer": "^10",
     "babel-jest": "^29.7.0",
-    "eslint": "^8.27.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-next": "13.5.6",

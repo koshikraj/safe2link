@@ -92,7 +92,7 @@ export function AccountConnectButton() {
 
                       <Flex gap="3" mt="4" justify="end">
                         <Dialog.Close onClick={handleCopyAddress}>
-                          <Button style={{ backgroundColor: "red"}}>Copy Address</Button>
+                          <Button>Copy Address</Button>
                         </Dialog.Close>
                         <Dialog.Close onClick={handleDisconnectWallet}>
                           <Button>Disconnect</Button>
