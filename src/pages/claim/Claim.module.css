@@ -1,0 +1,59 @@
+/* .homeScreenContainer {
+    margin: "0 !important";
+    padding: "10px !important";
+    display: "flex";
+  }
+.actionsContainer {
+    margin: 30px 0 130px 0;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    display: flex;
+  }
+
+.heroImage {
+
+    width: 340px;
+    margin-top: 50px;
+    @media (max-width: 400px) {
+      max-width: 100%;
+      min-width: 100%;
+      width: 100%;
+    }
+}
+
+
+.innerContainer {
+    border-radius: 8px;
+    width: 591px;
+    margin: 45px auto 0 auto;
+    min-width: 591px;
+    @media (max-width: 900px) {
+      max-width: 100%;
+      min-width: 100%;
+      width: 100%;
+    }
+  }
+
+.p {
+    font-weight: 550;
+    font: 18px;
+    color: grey;
+    line-height: 30px;
+    text-align: center;
+    margin-top: 32px;
+  } */
+
+.homeContainer {
+  max-width: 500px;
+  margin: 0 auto;
+  border-radius: 4px;
+  border: 1px solid #D0D5DD;
+  background-color: #fff d;
+  margin-top:80px;
+  /* box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); */
+}
+
+.formContainer{
+  padding: 20px;
+}

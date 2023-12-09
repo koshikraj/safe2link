@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "npm run lint:eslint && npm run lint:stylelint",
@@ -32,12 +33,15 @@
     "empty-module": "^0.0.2",
     "ethers": "6.7.1",
     "ethersv5": "npm:ethers@^5",
+    "gh-pages": "^6.1.0",
+    "permissionless": "^0.0.13",
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-confetti": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.18.0",
     "styled-components": "^6.1.1",
+    "viem": "^1.19.11",
     "zustand": "^4.4.7"
   },
   "devDependencies": {

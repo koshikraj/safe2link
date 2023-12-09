@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router';
 // import { RequireAuth, NotFound } from "../components";
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter,RouterProvider } from 'react-router-dom';
 import HomePage from '../pages/home/Home.page';
+import ClaimPage from '../pages/claim/Claim.page';
 import { RoutePath } from './route-path';
 import { AccountPage } from '@/pages/account/account.page';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: RoutePath.home,
     element: <HomePage />,
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: RoutePath.claim,
-    element: <HomePage />,
+    element: <ClaimPage />,
   },
 ]);
 

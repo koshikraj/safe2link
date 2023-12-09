@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import {
+  Avatar,
+  Badge,
   Button,
   Center,
   Container,
@@ -21,6 +23,30 @@ import { createLink } from '../../logic/module';
 import { ZeroAddress } from 'ethers';
 
 import Confetti from 'react-confetti';
+import { IconSun } from '@tabler/icons';
+
+import Base from '../../assets/icons/base.png';
+import ETH from '../../assets/icons/eth.svg';
+import Gnosis from '../../assets/icons/gno.svg';
+import { getProvider } from '@/logic/web3';
+
+
+const badgeIcons = [
+  { ids: ['84531'], img: Base },
+  { ids: ['11155111', '5', '1'], img: ETH },
+  { ids: ['100'], img: Gnosis },
+  // Add more mappings as needed
+];
+
+function getIconForId(id: any) {
+  for (const icon of badgeIcons) {
+    if (icon.ids.includes(id.toString())) {
+      return icon.img;
+    }
+  }
+  // Return a default icon or handle the case when no mapping is found
+  return 'defaultIcon';
+}
 
 function HomePage() {
   const [opened, { open, close }] = useDisclosure(false);
@@ -32,29 +58,46 @@ function HomePage() {
 
   const [seletcedNetwork, setSelectedNetwork] = useState<string | null>('');
   // { i: Number(index), p: randomSeed, c: chainId }
-  const { signIn, accountInfo, getChainId, network } = useSafeAuth();
-  console.log('account info', accountInfo);
+  const [network, setNetwork] = useState('');
+  const [chainId, setChainId] = useState(84531);
 
   const [isLinkCreated, setIsLinkCreated] = useState(false);
   const [sharableLink, setSharableLink] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const create = async () => {
-    setIsLinkCreated(true);
-    setIsLoading(true);
-    const apiUrl = 'http://localhost:5721';
-    const obj = { i: 659, p: 'hZuTKaw5CaI3TfEF', c: 10 };
-    //@ts-ignore
-    const queryString = new URLSearchParams(obj)?.toString();
-    const url = `${apiUrl}/claim#${queryString}`;
 
+    setIsLoading(true);
+    try {
+    const result = await createLink('0x0A5B7706DcFb703Bc672e8Bbe0b672B12Ada69d4', ZeroAddress, tokenValue)
+        //@ts-ignore
+    const queryString = new URLSearchParams(result)?.toString();
+    const url = `${window.location.href}#/claim?${queryString}`;
     console.log('url', url);
     setSharableLink(url);
     setIsLinkCreated(false);
     setIsLoading(false);
+    }
+    catch(e) {
+      setIsLoading(false);
+    }
+    setIsLinkCreated(true);
+
   };
 
-  console.log('seletced network', seletcedNetwork, seletcedToken, tokenValue);
+  useEffect(() => {
+
+    ;(async () => {
+
+
+      const provider = await getProvider()
+
+      const chainId = (await provider.getNetwork()).chainId
+      setChainId(Number(chainId))
+      setNetwork(`${NetworkUtil.getNetworkById(Number(chainId))?.name} ${NetworkUtil.getNetworkById(Number(chainId))?.type}`);
+
+  })()   
+  }, [])
 
   return (
     <>
@@ -104,21 +147,34 @@ function HomePage() {
                 />
               </Input.Wrapper>
 
+              <div style={{display: "flex", justifyContent: "space-between", marginTop: "20px", marginBottom: "20px", alignItems: "center"}}>
+
+
               <Select
-                label="Select the Token"
+                // label="Select the Token"
                 placeholder="Select the token"
                 data={['USDT', 'Matic', 'ETH', 'FIL']}
                 value={seletcedToken}
                 onChange={setSelectedToken}
               />
-              <Select
-                label="Select Network"
-                placeholder={network}
-                data={['Base', 'Goerli', 'Opmitism', 'Celo']}
-                value={seletcedNetwork}
-                disabled
-                onChange={setSelectedNetwork}
-              />
+
+             <Badge
+                pl={0}
+                color="gray"
+                variant="light"
+                leftSection={
+                  <Avatar alt="Avatar for badge" size={24} mr={5} src={getIconForId(chainId)} />
+                }
+                size="lg"
+                className={classes.network}
+                checked={false}
+                icon={<IconSun />}
+              >
+                {network}
+              </Badge>
+            </div>
+
+        
             </div>
             <Button
               type="button"
@@ -126,6 +182,7 @@ function HomePage() {
               color="green"
               className={classes.btn}
               onClick={create}
+              loading={isLoading}
               // onClick={async () => {
               //   setMock({ i: 0, p: 'randomSeed', c: 1 });
               //   console.log(
@@ -134,7 +191,7 @@ function HomePage() {
               //   );
               // }}
             >
-              {isLoading ? 'Creating Link' : 'Create Link'}
+              {isLoading ? 'Creating Link ...' : 'Create Link'}
             </Button>
 
             <p className={classes.subheading}>

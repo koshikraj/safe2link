@@ -47,9 +47,9 @@ function getIconForId(id) {
 export const Head = (props) => {
   const { setOpened, opened } = props;
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  const { chainId, setChainId, network, setNetwork } = useSafeAuth();
-  // const [network, setNetwork] = useState('');
-  // const [chainId, setChainId] = useState(84531);
+  // const { chainId, setChainId, network, setNetwork } = useSafeAuth();
+  const [network, setNetwork] = useState('');
+  const [chainId, setChainId] = useState(84531);
 
   const dark = colorScheme === 'dark';
 
@@ -88,20 +88,6 @@ export const Head = (props) => {
             </Group>
 
             <Group className={classes.mode}>
-              <Badge
-                pl={0}
-                color="gray"
-                variant="light"
-                leftSection={
-                  <Avatar alt="Avatar for badge" size={24} mr={5} src={getIconForId(chainId)} />
-                }
-                size="lg"
-                className={classes.network}
-                checked={false}
-                icon={<IconSun />}
-              >
-                {network}
-              </Badge>
 
               {/* <Group className={classes.container} position="center"> */}
               <div className={classes.container}>

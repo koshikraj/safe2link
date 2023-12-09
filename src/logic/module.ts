@@ -5,6 +5,7 @@ import { getSafeInfo, isConnectedToSafe, submitTxs } from "./safeapp";
 import { isModuleEnabled, buildEnableModule, isGuardEnabled, buildEnableGuard } from "./safe";
 import { getJsonRpcProvider, getProvider } from "./web3";
 import Safe2LinkModule from "./Safe2LinkModule.json"
+import { sendTransaction } from "./permissionless";
 
 
 
@@ -17,8 +18,6 @@ const getLinkCount = async (module: string): Promise<number> => {
     const chainId = (await provider.getNetwork()).chainId.toString()
     const bProvider = await getJsonRpcProvider(chainId)
 
-    const safeInfo = await getSafeInfo()
-
 
     const safe2link = new Contract(
         module,
@@ -27,6 +26,23 @@ const getLinkCount = async (module: string): Promise<number> => {
     )
 
     return await safe2link.getDepositCount()
+
+}
+
+
+export const getLinkDetails = async (module: string, chainId: string, index: number): Promise<{}> => {
+
+
+    const bProvider = await getJsonRpcProvider(chainId)
+
+
+    const safe2link = new Contract(
+        module,
+        Safe2LinkModule.abi,
+        bProvider
+    )
+
+    return await safe2link.getDeposit(index)
 
 }
 
@@ -113,20 +129,19 @@ const buildCreateLink = async (module: string, publicAddress: string, token: str
 }
 
 
-const claimLink = async (module: string, key: string, recipient: string): Promise<BaseTransaction> => {
+export const claimLink = async(chainId: string, module: string, index: number, seed: string, recipient: string) => {
+    
 
-
-    const provider = await getProvider()
-    // Updating the provider RPC if it's from the Safe App.
-    const chainId = (await provider.getNetwork()).chainId.toString()
     const bProvider = await getJsonRpcProvider(chainId)
 
-    const safeInfo = await getSafeInfo()
+    const { address, privateKey } = generateKeysFromString(seed)
 
     const addressHash = solidityHashAddress(recipient)
-    const addressHashBinary = ethers.utils.arrayify(addressHash) // v5
-    const addressHashEIP191 = solidityHashBytesEIP191(addressHashBinary)
-    const signature = signAddress(recipient, key) // sign with link keys
+	const addressHashBinary = ethers.utils.arrayify(addressHash) // v5
+	const addressHashEIP191 = solidityHashBytesEIP191(addressHashBinary)
+
+
+	const signature = signAddress(recipient, privateKey) // sign with link keys
 
     const safe2link = new Contract(
         module,
@@ -134,32 +149,32 @@ const claimLink = async (module: string, key: string, recipient: string): Promis
         bProvider
     )
 
-    return {
-        to: module,
-        value: "0",
-        data: (await safe2link.createLink.populateTransaction(ZeroAddress, 60, ZeroAddress)).data
-    }
-}
+    const data = await safe2link.claimLink.populateTransaction(index, recipient, addressHashEIP191, signature)
+
+    console.log(data)
+
+    await sendTransaction(chainId, module, data.data)
+} 
 
 
 
 export const createLink = async (module: string, token: string, amount: string) => {
 
-    // if (!await isConnectedToSafe()) throw Error("Not connected to a Safe")
+    if (!await isConnectedToSafe()) throw Error("Not connected to a Safe")
 
-    // const info = await getSafeInfo()
-    // const txs: BaseTransaction[] = []
+    const info = await getSafeInfo()
+    const txs: BaseTransaction[] = []
 
     const randomSeed = generateRandomString(18)
 
     const { address, privateKey } = generateKeysFromString(randomSeed)
 
 
-    // if (!await isModuleEnabled(info.safeAddress, module)) {
-    //     txs.push(await buildEnableModule(info.safeAddress, module))
-    // }
+    if (!await isModuleEnabled(info.safeAddress, module)) {
+        txs.push(await buildEnableModule(info.safeAddress, module))
+    }
 
-    // txs.push(await buildCreateLink(module, address, token, amount))
+    txs.push(await buildCreateLink(module, address, token, amount))
 
     const provider = await getProvider()
     // Updating the provider RPC if it's from the Safe App.
@@ -168,8 +183,8 @@ export const createLink = async (module: string, token: string, amount: string) 
     const index = await getLinkCount(module)
 
 
-    // if (txs.length == 0) return
-    // await submitTxs(txs)
+    if (txs.length == 0) return
+    await submitTxs(txs)
 
     return { i: Number(index), p: randomSeed, c: chainId }
 }
