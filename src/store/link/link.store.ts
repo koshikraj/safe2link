@@ -1,10 +1,10 @@
-import create from "zustand";
+import create from 'zustand';
 
 const useLinkStore = create((set) => ({
   fetching: false,
   accountDetails: {},
   authDetails: {},
-  chainId:  localStorage.getItem("chainId") ? parseInt(localStorage.getItem("chainId")!) : 84531,
+  chainId: localStorage.getItem('chainId') ? parseInt(localStorage.getItem('chainId')!) : 84531,
   confirming: false,
   confirmed: false,
 
@@ -29,7 +29,6 @@ const useLinkStore = create((set) => ({
     }));
   },
 
-
   setFetching: (status: boolean) => {
     set((state: any) => ({
       ...state,
@@ -45,7 +44,6 @@ const useLinkStore = create((set) => ({
     set((state: any) => ({
       authDetails: data,
     })),
-
 
 }));
 export default useLinkStore;
