@@ -10053,7 +10053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.7.1":
+"ethers@npm:5.7.2, ethers@npm:^5.7.1, ethersv5@npm:ethers@^5":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -13128,6 +13128,7 @@ __metadata:
     eslint-plugin-react: "npm:^7.33.2"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     ethers: "npm:6.7.1"
+    ethersv5: "npm:ethers@^5"
     identity-obj-proxy: "npm:^3.0.0"
     jsdom: "npm:^22.1.0"
     postcss: "npm:^8.4.31"

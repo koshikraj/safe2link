@@ -9,6 +9,9 @@ import {
 } from '@safe-global/auth-kit'
 import { NetworkUtil } from '../logic/networks';
 
+import { createLink } from '../logic/module';
+import { ZeroAddress } from 'ethers';
+
 
 function HomePage() {
 
@@ -77,7 +80,7 @@ function HomePage() {
         
       
       <Button
-                onClick={() => {  }}
+                onClick={async () => { console.log(await createLink('0x0A5B7706DcFb703Bc672e8Bbe0b672B12Ada69d4', ZeroAddress, "0.01"))  }}
                 size="lg"
                 radius="md"
                 color={ "#20283D" }
