@@ -1,13 +1,27 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { SafeAuthPack, SafeAuthConfig, SafeAuthInitOptions } from '@safe-global/auth-kit';
+import {
+  SafeAuthPack,
+  SafeAuthConfig,
+  SafeAuthInitOptions,
+  SafeAuthUserInfo,
+} from '@safe-global/auth-kit';
+import { BrowserProvider, Eip1193Provider, ethers } from 'ethers';
 import { NetworkUtil } from '@/logic/networks';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }: any) => {
-  const [authInstance, setAuthInstance] = useState(null);
+  const [authInstance, setAuthInstance] = useState<SafeAuthPack>();
   const [accountInfo, setAccountInfo] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userInfo, setUserInfo] = useState<SafeAuthUserInfo | null>(null);
+  const [chainId, setChainId] = useState(84531);
+  const [balance, setBalance] = useState<string>();
+  const [safeAuthSignInResponse, setSafeAuthSignInResponse] = useState<AuthKitSignInData | null>(
+    null
+  );
+  const [network, setNetwork] = useState('');
+  const [provider, setProvider] = useState<BrowserProvider>();
 
   const fetchData = useCallback(async () => {
     try {
@@ -31,7 +45,7 @@ export const AuthProvider = ({ children }: any) => {
       setAuthInstance(safeAuthPack);
       // const signInInfo = await safeAuthPack?.signIn();
     } catch (e) {
-      console.warn(e);
+      console.log(e);
     }
   }, []);
 
@@ -39,12 +53,37 @@ export const AuthProvider = ({ children }: any) => {
     fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    if (!authInstance || !isAuthenticated) return;
+    (async () => {
+      const web3Provider = authInstance.getProvider();
+      const info = await authInstance.getUserInfo();
+
+      setUserInfo(info);
+
+      if (web3Provider) {
+        const p = new BrowserProvider(authInstance.getProvider() as Eip1193Provider);
+        console.log('ppppprovider----', p);
+
+        const signer = await p.getSigner();
+        const signerAddress = await signer.getAddress();
+        //@ts-ignore
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        setChainId((await p?.getNetwork()).chainId.toString());
+        setBalance(ethers.formatEther((await p.getBalance(signerAddress)) as ethers.BigNumberish));
+        setProvider(provider);
+      }
+    })();
+  }, [isAuthenticated]);
+
+  console.log(provider, balance, chainId);
+
   // Sign in func
   const signIn = async () => {
     try {
       //@ts-ignore
       const signInInfo = await authInstance?.signIn();
-      setAccountInfo(signInInfo);
+      setSafeAuthSignInResponse(signInInfo);
       setIsAuthenticated(true);
       console.log('signin info', signInInfo);
     } catch (error) {
@@ -54,8 +93,10 @@ export const AuthProvider = ({ children }: any) => {
 
   const signOut = async () => {
     //@ts-ignore
+
     await authInstance?.signOut();
-    setAuthInstance(null);
+
+    setSafeAuthSignInResponse(null);
     setIsAuthenticated(false);
   };
 
@@ -69,6 +110,10 @@ export const AuthProvider = ({ children }: any) => {
         setAccountInfo,
         accountInfo,
         signOut,
+        chainId,
+        setChainId,
+        network,
+        setNetwork,
       }}
     >
       {children}

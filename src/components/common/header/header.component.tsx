@@ -25,6 +25,7 @@ import { NetworkUtil } from '../../../logic/networks';
 import useLinkStore from '../../../store/link/link.store';
 import { getProvider } from '../../../logic/web3';
 import classes from './header.component.module.css';
+import { useSafeAuth } from '@/context';
 
 const badgeIcons = [
   { ids: ['84531'], img: Base },
@@ -46,11 +47,10 @@ function getIconForId(id) {
 export const Head = (props) => {
   const { setOpened, opened } = props;
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { chainId, setChainId, network, setNetwork } = useSafeAuth();
+  // const [network, setNetwork] = useState('');
+  // const [chainId, setChainId] = useState(84531);
 
-  const [network, setNetwork] = useState('');
-  const [chainId, setChainId] = useState(84531);
-
-  const {} = useLinkStore((state: any) => state);
   const dark = colorScheme === 'dark';
 
   // const [ opened, setOpened ] = useState(false);

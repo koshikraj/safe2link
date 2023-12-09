@@ -24,7 +24,7 @@ export const AppLayout: React.FC<AppLayoutProps> = (props) => {
         <MantineLogo size={30} />
       </Group> */}
       <Head setOpened={setOpened} opened={opened} />
-      <AppShell.Main style={{ background: '#FCFCFD' }}>
+      <AppShell.Main>
         {' '}
         <Container>{children}</Container>
       </AppShell.Main>

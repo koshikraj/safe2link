@@ -9,5 +9,11 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest.setup.mjs',
+
   },
+  devServer: {
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
 });
