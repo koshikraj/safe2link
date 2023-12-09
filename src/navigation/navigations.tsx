@@ -1,9 +1,9 @@
-import { Routes, Route } from "react-router";
+import { Routes, Route } from 'react-router';
 // import { RequireAuth, NotFound } from "../components";
-import HomePage  from '../pages/Home.page';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { RoutePath } from "./route-path";
-
+import HomePage from '../pages/home/Home.page';
+import { RoutePath } from './route-path';
+import { AccountPage } from '@/pages/account/account.page';
 
 const router = createBrowserRouter([
   {
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   },
   {
     path: RoutePath.account,
-    element: <HomePage />,
+    element: <AccountPage />,
   },
   {
     path: RoutePath.claim,
@@ -24,8 +24,7 @@ export function Navigation() {
   return <RouterProvider router={router} />;
 }
 
-
-
+// eslint-disable-next-line arrow-body-style
 export const LandingPageNavigation = () => {
   return (
     <>
@@ -36,5 +35,3 @@ export const LandingPageNavigation = () => {
     </>
   );
 };
-
-
