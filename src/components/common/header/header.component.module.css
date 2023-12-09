@@ -1,0 +1,96 @@
+.nav {
+  height: "64px";
+  /* display: "flex"; */
+  /* minWidth: "591px", */
+  @media (max-width: 900px): {
+    max-width: 100%;
+    min-width: 100%;
+    width: 100%;
+  }; 
+  gap: 2rem;
+  align-items: "center";
+  /* background: theme.colorScheme === "dark" ? "1A1B1E" : "white", */
+
+  /* borderBottom: */
+    /* theme.colorScheme === "dark" ? "1px solid  #25262B" : "1px solid #ECEEF5", */
+}
+
+
+.wrapper {
+  max-width: 900px;
+  /* margin: "0 auto", */
+  border-radius: 8px;
+  margin: 10px auto 0 auto;
+  /* [`@media (max-width: ${theme.breakpoints.sm}px)`]: { */
+    /* maxWidth: "100%", */
+  /* }, */
+}
+
+.maincontainer {
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  /* [`@media (max-width: ${theme.breakpoints.sm}px)`]: { */
+    /* maxWidth: "100%", */
+  /* }, */
+}
+
+.network {
+  @media (max-width: 500px) {
+    visibility: hidden;
+  }
+}
+
+
+.buttonContainer {
+  width: 30px;
+  height: 30px;
+  padding: 2px;
+  /* border: */
+    /* theme.colorScheme === "dark"
+      ? "1px solid 1px solid #25262B "
+      : "1px solid #A6A7AB", */
+  border-radius: 4px,
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.mode {
+  display: "flex";
+  align-items: "center";
+  justify-content: "center";
+  flex-direction: "row";
+  @media (max-width: 500px) {
+   visibility: hidden;
+  }
+}
+
+.root {
+  position: "relative";
+  /* "& *": { */
+    /* cursor: "pointer", */
+  /* }, */
+}
+
+.icon {
+  pointer-events: "none";
+  position: "absolute";
+  z-index: 1;
+  top: 3;
+}
+
+.iconLight {
+  left: 4;
+  /* color: theme.white */
+}
+
+.iconDark {
+  right: 4;
+  /* color: theme.colors.gray[6], */
+}
