@@ -1,7 +1,7 @@
 
 
-.homeContainer {
-  max-width: 500px;
+.accountContainer {
+  max-width: 600px;
   margin: 0 auto;
   border-radius: 4px;
   border: 1px solid #4a4a4a;
@@ -18,6 +18,28 @@
   flex-direction: column;
 }
 
+
+.avatarContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+.balance{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.avatar{
+    height: 60px;
+    width: 60px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+}
+
 .heading{
   text-align: center;
   background: #00FF00;
@@ -31,7 +53,6 @@ background: linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
 
 .btn {
   background-image: linear-gradient(to right, #1d976c 0%, #93f9b9 51%, #1d976c 100%);
-  margin-top: 20px;
 
   transition: 0.5s;
   background-size: 200% auto;
@@ -42,4 +63,23 @@ background: linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
+}
+
+
+.actionsContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+.actions{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:20px;
+    margin-bottom: 20px;
 }

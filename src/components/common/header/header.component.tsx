@@ -81,14 +81,13 @@ export const Head = (props) => {
                 onClick={() => {
                   navigate(RoutePath.home);
                 }}
-                style={{ cursor: 'pointer', width: '200px' }}
+                style={{ cursor: 'pointer', width: '130px' }}
                 src={dark ? LogoDark : LogoLight}
                 alt="Logo"
               />
             </Group>
 
             <Group className={classes.mode}>
-
               {/* <Group className={classes.container} position="center"> */}
               <div className={classes.container}>
                 {dark ? (

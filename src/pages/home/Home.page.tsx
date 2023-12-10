@@ -30,7 +30,6 @@ import ETH from '../../assets/icons/eth.svg';
 import Gnosis from '../../assets/icons/gno.svg';
 import { getProvider } from '@/logic/web3';
 
-
 const badgeIcons = [
   { ids: ['84531'], img: Base },
   { ids: ['11155111', '5', '1'], img: ETH },
@@ -66,38 +65,40 @@ function HomePage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const create = async () => {
-
     setIsLoading(true);
     try {
-    const result = await createLink('0x0A5B7706DcFb703Bc672e8Bbe0b672B12Ada69d4', ZeroAddress, tokenValue)
-        //@ts-ignore
-    const queryString = new URLSearchParams(result)?.toString();
-    const url = `${window.location.href}#/claim?${queryString}`;
-    console.log('url', url);
-    setSharableLink(url);
-    setIsLinkCreated(false);
-    setIsLoading(false);
-    }
-    catch(e) {
+      // const result = await createLink(
+      //   '0x0A5B7706DcFb703Bc672e8Bbe0b672B12Ada69d4',
+      //   ZeroAddress,
+      //   tokenValue
+      // );
+      // //@ts-ignore
+      // const queryString = new URLSearchParams(result)?.toString();
+      // const url = `${window.location.href}#/claim?${queryString}`;
+      // console.log('url', url);
+      // setSharableLink(url);
+      // setIsLinkCreated(false);
+      // setIsLoading(false);
+      setSharableLink('remove this later');
+    } catch (e) {
       setIsLoading(false);
     }
     setIsLinkCreated(true);
-
   };
 
   useEffect(() => {
+    (async () => {
+      const provider = await getProvider();
 
-    ;(async () => {
-
-
-      const provider = await getProvider()
-
-      const chainId = (await provider.getNetwork()).chainId
-      setChainId(Number(chainId))
-      setNetwork(`${NetworkUtil.getNetworkById(Number(chainId))?.name} ${NetworkUtil.getNetworkById(Number(chainId))?.type}`);
-
-  })()   
-  }, [])
+      const chainId = (await provider.getNetwork()).chainId;
+      setChainId(Number(chainId));
+      setNetwork(
+        `${NetworkUtil.getNetworkById(Number(chainId))?.name} ${NetworkUtil.getNetworkById(
+          Number(chainId)
+        )?.type}`
+      );
+    })();
+  }, []);
 
   return (
     <>
@@ -108,15 +109,25 @@ function HomePage() {
             <div className={classes.formContainer}>
               <h1 className={classes.heading}>Yay!!!</h1>
 
-              <p className={classes.subheading}>
+              <p className={classes.subheading} style={{ textAlign: 'center' }}>
                 Share this link with Anyone, so that they can claim the funds
               </p>
 
               <div className={classes.copyContainer}>
-                <Input style={{ width: '400px' }} value={sharableLink} disabled />
+                <Input
+                  className={classes.input}
+                  // style={{ width: '400px' }}
+                  value={sharableLink}
+                  placeholder={sharableLink}
+                />
+
                 <CopyButton value={sharableLink}>
                   {({ copied, copy }) => (
-                    <Button color={copied ? 'green' : 'teal'} onClick={copy}>
+                    <Button
+                      className={classes.btn}
+                      color={copied ? 'green' : 'teal'}
+                      onClick={copy}
+                    >
                       {copied ? 'Copied Link' : 'Copy Link'}
                     </Button>
                   )}
@@ -137,6 +148,40 @@ function HomePage() {
               <h1 className={classes.heading}>Send crypto effortlessly with Safe2Link!</h1>
             </div>
             <div className={classes.inputContainer}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginTop: '20px',
+                  marginBottom: '20px',
+                  alignItems: 'center',
+                }}
+              >
+                <Select
+                  // label="Select the Token"
+                  placeholder="ETH"
+                  data={['USDT', 'Matic', 'ETH', 'FIL']}
+                  defaultValue="ETH"
+                  value={seletcedToken}
+                  onChange={setSelectedToken}
+                />
+
+                <Badge
+                  pl={0}
+                  color="gray"
+                  variant="light"
+                  leftSection={
+                    <Avatar alt="Avatar for badge" size={24} mr={5} src={getIconForId(chainId)} />
+                  }
+                  size="lg"
+                  className={classes.network}
+                  checked={false}
+                  icon={<IconSun />}
+                >
+                  {network}
+                </Badge>
+              </div>
+
               <Input.Wrapper label="Enter Value">
                 <Input
                   type="number"
@@ -146,35 +191,6 @@ function HomePage() {
                   className={classes.input}
                 />
               </Input.Wrapper>
-
-              <div style={{display: "flex", justifyContent: "space-between", marginTop: "20px", marginBottom: "20px", alignItems: "center"}}>
-
-
-              <Select
-                // label="Select the Token"
-                placeholder="Select the token"
-                data={['USDT', 'Matic', 'ETH', 'FIL']}
-                value={seletcedToken}
-                onChange={setSelectedToken}
-              />
-
-             <Badge
-                pl={0}
-                color="gray"
-                variant="light"
-                leftSection={
-                  <Avatar alt="Avatar for badge" size={24} mr={5} src={getIconForId(chainId)} />
-                }
-                size="lg"
-                className={classes.network}
-                checked={false}
-                icon={<IconSun />}
-              >
-                {network}
-              </Badge>
-            </div>
-
-        
             </div>
             <Button
               type="button"
