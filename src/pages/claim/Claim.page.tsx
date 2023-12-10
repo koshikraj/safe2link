@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, } from 'react';
 import {
   Avatar,
   Badge,
@@ -14,20 +14,21 @@ import {
 import { SafeAuthPack, SafeAuthConfig, SafeAuthInitOptions } from '@safe-global/auth-kit';
 import classes from './Claim.module.css';
 import Confetti from 'react-confetti';
+import { useNavigate } from 'react-router-dom';
 
 import { NetworkUtil } from '../../logic/networks';
 import { useSafeAuth } from '@/context';
 import { useDisclosure } from '@mantine/hooks';
 import { createLink, claimLink, getLinkDetails } from '../../logic/module';
 import { formatEther, parseEther, ZeroAddress } from 'ethers';
-import { sendTransaction } from '@/logic/permissionless';
+import { createSafeAccount, sendTransaction } from '@/logic/permissionless';
 
 import Base from '../../assets/icons/base.png';
 import ETH from '../../assets/icons/eth.svg';
 import Gnosis from '../../assets/icons/gno.svg';
 import { IconSun } from '@tabler/icons';
+import { RoutePath } from '@/navigation';
 
-const moduleAddress = '0x0A5B7706DcFb703Bc672e8Bbe0b672B12Ada69d4';
 
 const badgeIcons = [
   { ids: ['84531'], img: Base },
@@ -48,20 +49,22 @@ function getIconForId(id: any) {
 
 function ClaimPage() {
   const [opened, { open, close }] = useDisclosure(false);
+  const navigate = useNavigate();
   const [queryParams, setQueryParams]: any = useState();
   const [linkDetails, setLinkDetails]: any = useState({});
   const [network, setNetwork] = useState('');
+  // const { setConfirmed, setAddress } = useLinkStore((state: any) => state);
 
-  const { signIn } = useSafeAuth();
+  const { signIn }: any = useSafeAuth();
 
-  function getAllQueryParameters(url) {
+  function getAllQueryParameters(url: any) {
     const queryString = url.split('?')[1];
     if (!queryString) {
       return null;
     }
 
     const params = new URLSearchParams(queryString);
-    const parameters = {};
+    const parameters: any = {};
 
     for (const [key, value] of params.entries()) {
       parameters[key] = value;
@@ -72,12 +75,14 @@ function ClaimPage() {
 
   useEffect(() => {
     // Get the current URL search parameters
+
+    
     (async () => {
       const qParams: any = getAllQueryParameters(window.location.href);
       setQueryParams(qParams);
 
-      const { claimed, amount, tokenAddress } = await getLinkDetails(
-        moduleAddress,
+      
+      const { claimed, amount, tokenAddress }: any = await getLinkDetails(
         qParams.c,
         qParams.i
       );
@@ -188,18 +193,24 @@ function ClaimPage() {
             type="button"
             className={classes.btn}
             onClick={async () => {
+              const  signer  = signIn();
+
+              // console.log(signer)
+         
+              
               await claimLink(
                 queryParams.c,
-                moduleAddress,
                 queryParams.i,
                 queryParams.p,
-                '0x958543756A4c7AC6fB361f0efBfeCD98E4D297Db'
+                1
               );
+
+              navigate(RoutePath.account);
             }}
           >
             Claim
           </Button>
-          <p className="helperText">something....</p>
+    
         </div>
       </div>
       {/* show confetti when claim is success */}

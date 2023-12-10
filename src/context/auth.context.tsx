@@ -4,6 +4,7 @@ import {
   SafeAuthConfig,
   SafeAuthInitOptions,
   SafeAuthUserInfo,
+  AuthKitSignInData,
 } from '@safe-global/auth-kit';
 import { BrowserProvider, Eip1193Provider, ethers } from 'ethers';
 import { NetworkUtil } from '@/logic/networks';
@@ -67,6 +68,8 @@ export const AuthProvider = ({ children }: any) => {
 
         const signer = await p.getSigner();
         const signerAddress = await signer.getAddress();
+
+        console.log(signer)
         //@ts-ignore
         // eslint-disable-next-line no-unsafe-optional-chaining
         setChainId((await p?.getNetwork()).chainId.toString());
@@ -79,13 +82,18 @@ export const AuthProvider = ({ children }: any) => {
   console.log(provider, balance, chainId);
 
   // Sign in func
-  const signIn = async () => {
+  const signIn = async (): Promise<any> => {
     try {
       //@ts-ignore
       const signInInfo = await authInstance?.signIn();
-      setSafeAuthSignInResponse(signInInfo);
+      setSafeAuthSignInResponse(signInInfo!);
       setIsAuthenticated(true);
-      console.log('signin info', signInInfo);
+      const p = new BrowserProvider(authInstance?.getProvider() as Eip1193Provider);
+
+      const signer = await p.getSigner();
+
+      return(signer)
+
     } catch (error) {
       console.log('something went wrong....');
     }

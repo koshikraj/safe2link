@@ -7,6 +7,7 @@ const useLinkStore = create((set) => ({
   chainId: localStorage.getItem('chainId') ? parseInt(localStorage.getItem('chainId')!) : 84531,
   confirming: false,
   confirmed: false,
+  // address: '',
 
   setChainId: (id: number) => {
     set((state: any) => ({
@@ -14,6 +15,13 @@ const useLinkStore = create((set) => ({
       chainId: id,
     }));
   },
+
+  // setAddress: (address: string) => {
+  //   set((state: any) => ({
+  //     ...state,
+  //     address: address,
+  //   }));
+  // },
 
   setConfirming: (status: boolean) => {
     set((state: any) => ({

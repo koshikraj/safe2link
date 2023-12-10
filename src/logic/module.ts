@@ -5,12 +5,12 @@ import { getSafeInfo, isConnectedToSafe, submitTxs } from "./safeapp";
 import { isModuleEnabled, buildEnableModule, isGuardEnabled, buildEnableGuard } from "./safe";
 import { getJsonRpcProvider, getProvider } from "./web3";
 import Safe2LinkModule from "./Safe2LinkModule.json"
-import { sendTransaction } from "./permissionless";
+import { createSafeAccount, sendTransaction } from "./permissionless";
 
 
+const moduleAddress = "0xaB83F7041C82D5a915E608D887073B6C52a28459"
 
-
-const getLinkCount = async (module: string): Promise<number> => {
+const getLinkCount = async (): Promise<number> => {
 
 
     const provider = await getProvider()
@@ -20,29 +20,29 @@ const getLinkCount = async (module: string): Promise<number> => {
 
 
     const safe2link = new Contract(
-        module,
+        moduleAddress,
         Safe2LinkModule.abi,
         bProvider
     )
 
-    return await safe2link.getDepositCount()
+    return await safe2link.getLinkCount()
 
 }
 
 
-export const getLinkDetails = async (module: string, chainId: string, index: number): Promise<{}> => {
+export const getLinkDetails = async (chainId: string, index: number): Promise<{}> => {
 
 
     const bProvider = await getJsonRpcProvider(chainId)
 
 
     const safe2link = new Contract(
-        module,
+        moduleAddress,
         Safe2LinkModule.abi,
         bProvider
     )
 
-    return await safe2link.getDeposit(index)
+    return await safe2link.getLink(index)
 
 }
 
@@ -104,7 +104,7 @@ export async function signAddress(string: string, privateKey: string) {
 
 
 
-const buildCreateLink = async (module: string, publicAddress: string, token: string, amount: string): Promise<BaseTransaction> => {
+const buildCreateLink = async (publicAddress: string, token: string, amount: string): Promise<BaseTransaction> => {
 
 
     const provider = await getProvider()
@@ -116,49 +116,60 @@ const buildCreateLink = async (module: string, publicAddress: string, token: str
 
 
     const safe2link = new Contract(
-        module,
+        moduleAddress,
         Safe2LinkModule.abi,
         bProvider
     )
 
     return {
-        to: module,
+        to: moduleAddress,
         value: "0",
         data: (await safe2link.createLink.populateTransaction(token, parseEther(amount), publicAddress)).data
     }
 }
 
 
-export const claimLink = async(chainId: string, module: string, index: number, seed: string, recipient: string) => {
+export const claimLink = async(chainId: string, index: number, seed: string, signer: any) => {
     
 
     const bProvider = await getJsonRpcProvider(chainId)
 
     const { address, privateKey } = generateKeysFromString(seed)
 
-    const addressHash = solidityHashAddress(recipient)
+    console.log(address)
+
+    // const safeAccount =  await createSafeAccount(chainId, signer)
+
+    const safeAccount = {address: '0x2A6bFFF57F87f8D865CfDA6F304f0F58231Af921'}
+
+    console.log(safeAccount.address)
+
+
+    const addressHash = solidityHashAddress(safeAccount.address)
 	const addressHashBinary = ethers.utils.arrayify(addressHash) // v5
 	const addressHashEIP191 = solidityHashBytesEIP191(addressHashBinary)
 
 
-	const signature = signAddress(recipient, privateKey) // sign with link keys
+	const signature = signAddress(safeAccount.address, privateKey) // sign with link keys
 
     const safe2link = new Contract(
-        module,
+        moduleAddress,
         Safe2LinkModule.abi,
         bProvider
     )
 
-    const data = await safe2link.claimLink.populateTransaction(index, recipient, addressHashEIP191, signature)
+    const data = await safe2link.claimLink.populateTransaction(index, safeAccount.address, addressHashEIP191, signature)
 
     console.log(data)
 
-    await sendTransaction(chainId, module, data.data)
+    await sendTransaction(chainId, moduleAddress, data.data, signer)
+
+    return safeAccount;
 } 
 
 
 
-export const createLink = async (module: string, token: string, amount: string) => {
+export const createLink = async (token: string, amount: string) => {
 
     if (!await isConnectedToSafe()) throw Error("Not connected to a Safe")
 
@@ -170,17 +181,17 @@ export const createLink = async (module: string, token: string, amount: string) 
     const { address, privateKey } = generateKeysFromString(randomSeed)
 
 
-    if (!await isModuleEnabled(info.safeAddress, module)) {
-        txs.push(await buildEnableModule(info.safeAddress, module))
+    if (!await isModuleEnabled(info.safeAddress, moduleAddress)) {
+        txs.push(await buildEnableModule(info.safeAddress, moduleAddress))
     }
 
-    txs.push(await buildCreateLink(module, address, token, amount))
+    txs.push(await buildCreateLink(address, token, amount))
 
     const provider = await getProvider()
     // Updating the provider RPC if it's from the Safe App.
     const chainId = (await provider.getNetwork()).chainId.toString()
 
-    const index = await getLinkCount(module)
+    const index = await getLinkCount()
 
 
     if (txs.length == 0) return

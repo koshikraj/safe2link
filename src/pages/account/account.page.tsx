@@ -25,7 +25,7 @@ export const AccountPage = () => {
         </div>
 
         <div className={classes.actionsContainer}>
-          <p className={classes.balance}> balance : 2 ETH</p>
+          <p className={classes.balance}> balance : 0.01 ETH</p>
           <div className={classes.actions}>
             <Button style={{ width: '110px' }} className={classes.btn} color="teal">
               Send

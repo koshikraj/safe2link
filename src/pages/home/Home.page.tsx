@@ -26,14 +26,19 @@ import Confetti from 'react-confetti';
 import { IconSun } from '@tabler/icons';
 
 import Base from '../../assets/icons/base.png';
+import Celo from '../../assets/icons/celo.svg';
 import ETH from '../../assets/icons/eth.svg';
 import Gnosis from '../../assets/icons/gno.svg';
+import Matic from '../../assets/icons/matic.svg';
 import { getProvider } from '@/logic/web3';
+import { useNavigate } from 'react-router-dom';
 
 const badgeIcons = [
-  { ids: ['84531'], img: Base },
+  { ids: ['84531', '8453'], img: Base },
   { ids: ['11155111', '5', '1'], img: ETH },
   { ids: ['100'], img: Gnosis },
+  { ids: ['42220'], img: Celo },
+  { ids: ['1101', '137', '80001'], img: Matic },
   // Add more mappings as needed
 ];
 
@@ -49,6 +54,8 @@ function getIconForId(id: any) {
 
 function HomePage() {
   const [opened, { open, close }] = useDisclosure(false);
+
+
 
   const [mock, setMock] = useState({});
 
@@ -67,19 +74,18 @@ function HomePage() {
   const create = async () => {
     setIsLoading(true);
     try {
-      // const result = await createLink(
-      //   '0x0A5B7706DcFb703Bc672e8Bbe0b672B12Ada69d4',
-      //   ZeroAddress,
-      //   tokenValue
-      // );
-      // //@ts-ignore
-      // const queryString = new URLSearchParams(result)?.toString();
-      // const url = `${window.location.href}#/claim?${queryString}`;
-      // console.log('url', url);
-      // setSharableLink(url);
-      // setIsLinkCreated(false);
-      // setIsLoading(false);
-      setSharableLink('remove this later');
+      const result = await createLink(
+        ZeroAddress,
+        tokenValue
+      );
+      //@ts-ignore
+      const queryString = new URLSearchParams(result)?.toString();
+      const url = `${window.location.href}#/claim?${queryString}`;
+      console.log('url', url);
+      setSharableLink(url);
+      setIsLinkCreated(false);
+      setIsLoading(false);
+      setSharableLink(url);
     } catch (e) {
       setIsLoading(false);
     }
@@ -175,8 +181,7 @@ function HomePage() {
                   }
                   size="lg"
                   className={classes.network}
-                  checked={false}
-                  icon={<IconSun />}
+                
                 >
                   {network}
                 </Badge>
