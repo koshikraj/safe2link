@@ -1,4 +1,4 @@
-import { Contract, ZeroAddress, parseEther } from "ethers";
+import { Contract, ZeroAddress, parseEther, parseUnits } from "ethers";
 import { ethers } from 'ethersv5';
 import { BaseTransaction } from '@safe-global/safe-apps-sdk';
 import { getSafeInfo, isConnectedToSafe, submitTxs } from "./safeapp";
@@ -6,6 +6,7 @@ import { isModuleEnabled, buildEnableModule, isGuardEnabled, buildEnableGuard } 
 import { getJsonRpcProvider, getProvider } from "./web3";
 import Safe2LinkModule from "./Safe2LinkModule.json"
 import { createSafeAccount, sendTransaction } from "./permissionless";
+import { getTokenDecimals } from "./utils";
 
 
 const moduleAddress = "0xaB83F7041C82D5a915E608D887073B6C52a28459"
@@ -112,8 +113,6 @@ const buildCreateLink = async (publicAddress: string, token: string, amount: str
     const chainId = (await provider.getNetwork()).chainId.toString()
     const bProvider = await getJsonRpcProvider(chainId)
 
-    const safeInfo = await getSafeInfo()
-
 
     const safe2link = new Contract(
         moduleAddress,
@@ -121,33 +120,37 @@ const buildCreateLink = async (publicAddress: string, token: string, amount: str
         bProvider
     )
 
+
+    let parseAmount;
+    if(token == ZeroAddress) {
+            parseAmount = parseEther(amount);
+        } else {
+            parseAmount = parseUnits(amount, await  getTokenDecimals(token, provider))
+        }
+
     return {
         to: moduleAddress,
         value: "0",
-        data: (await safe2link.createLink.populateTransaction(token, parseEther(amount), publicAddress)).data
+        data: (await safe2link.createLink.populateTransaction(token, parseAmount, publicAddress)).data
     }
 }
 
 
-export const claimLink = async(chainId: string, index: number, seed: string, signer: any): Promise<any> => {
+export const claimLink = async(chainId: string, index: number, seed: string, account: any): Promise<any> => {
     
 
     const bProvider = await getJsonRpcProvider(chainId)
 
     const { address, privateKey } = generateKeysFromString(seed)
 
-    console.log(address)
 
-    const safeAccount =  await createSafeAccount(chainId, signer)
 
-    console.log(safeAccount.address)
-
-    const addressHash = solidityHashAddress(safeAccount.address)
+    const addressHash = solidityHashAddress(account.address)
 	const addressHashBinary = ethers.utils.arrayify(addressHash) // v5
 	const addressHashEIP191 = solidityHashBytesEIP191(addressHashBinary)
 
 
-	const signature = signAddress(safeAccount.address, privateKey) // sign with link keys
+	const signature = signAddress(account.address, privateKey) // sign with link keys
 
     const safe2link = new Contract(
         moduleAddress,
@@ -155,21 +158,23 @@ export const claimLink = async(chainId: string, index: number, seed: string, sig
         bProvider
     )
 
-    const data = await safe2link.claimLink.populateTransaction(index, safeAccount.address, addressHashEIP191, signature)
+    const data = await safe2link.claimLink.populateTransaction(index, account.address, addressHashEIP191, signature)
 
 
-    await sendTransaction(chainId, moduleAddress, data.data, signer)
+    return await sendTransaction(chainId, moduleAddress, data.data, account)
 
-    return safeAccount;
 } 
 
 
 
 export const createLink = async (token: string, amount: string) => {
 
+    
+
     if (!await isConnectedToSafe()) throw Error("Not connected to a Safe")
 
     const info = await getSafeInfo()
+
     const txs: BaseTransaction[] = []
 
     const randomSeed = generateRandomString(18)

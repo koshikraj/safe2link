@@ -1,14 +1,16 @@
 
 
 .homeContainer {
-  max-width: 500px;
+  max-width: 550px;
   margin: 0 auto;
   border-radius: 4px;
   border: 1px solid #4a4a4a;
   background-color: #fff d;
   margin-top:80px;
+  border: 0px solid #4a4a4a;
   /* box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05); */
 }
+
 
 .formContainer{
   padding: 20px;
@@ -18,9 +20,60 @@
   flex-direction: column;
 }
 
+.claimContainer{
+  padding-block: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 20px;
+  padding-right: 20px;
+
+}
+
+.links {
+  margin-top: 0;
+  font-size: 35px;
+  text-align: center;
+  font-weight: 700;
+  color: light-dark(var(--mantine-color-gray-7),var(--mantine-color-white-2));
+}
+
+.claimHeading{
+  margin-bottom: 0;
+  text-align: center;
+  background: #00FF00;
+  font-size: 35px;
+  background: -webkit-linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
+  background: -moz-linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
+  background: linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.claimInner{
+  display: flex;
+  align-items: center; 
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+  justify-content: center;
+  background: #00FF00;
+  column-gap: 20px;
+  font-size: 45px;
+  background: -webkit-linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
+  background: -moz-linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
+  background: linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .heading{
   text-align: center;
   background: #00FF00;
+  font-size: 25px;
 background: -webkit-linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
 background: -moz-linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
 background: linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
@@ -28,10 +81,25 @@ background: linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
 -webkit-text-fill-color: transparent;
 }
 
+.subHeading {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.footerHeading {
+  font-size: 14px;
+  text-align: center;
+}
+
+.loader {
+  font-size: 16px;
+  text-align: center;
+  font-weight: 600;
+}
 
 .btn {
   background-image: linear-gradient(to right, #1d976c 0%, #93f9b9 51%, #1d976c 100%);
-  margin-top: 20px;
 
   transition: 0.5s;
   background-size: 200% auto;
@@ -42,4 +110,28 @@ background: linear-gradient(to left, #00FF00 0%, #00FFFF 100%);
   background-position: right center; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
+}
+
+.input{
+  width: 100%;
+  cursor: pointer;
+}
+
+.inputContainer {
+  /* display: flex; */
+  /* align-items: center; */
+  justify-content: center;
+  gap:20px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.accountInputContainer {
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:20px */
+  display: flex;
+  flex-direction: column;
 }

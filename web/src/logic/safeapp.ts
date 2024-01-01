@@ -12,6 +12,7 @@ let cachedSafeInfo: SafeInfo | undefined = undefined
 export const getSafeInfo = async() => {
     if (cachedSafeInfo != undefined) return cachedSafeInfo
     cachedSafeInfo = await safeAppsSDK.safe.getInfo()
+    console.log(cachedSafeInfo)
     return cachedSafeInfo;
 }
 

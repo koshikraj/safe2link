@@ -4,10 +4,11 @@ const useLinkStore = create((set) => ({
   fetching: false,
   accountDetails: {},
   authDetails: {},
-  chainId: localStorage.getItem('chainId') ? parseInt(localStorage.getItem('chainId')!) : 84531,
+  chainId: localStorage.getItem('chainId') ? parseInt(localStorage.getItem('chainId')!) : 11155111,
   confirming: false,
   confirmed: false,
-  claimDetails: {},
+  claimDetails: {chainId: 11155111},
+  wallet: {},
 
   setChainId: (id: number) => {
     set((state: any) => ({
@@ -20,6 +21,13 @@ const useLinkStore = create((set) => ({
     set((state: any) => ({
       ...state,
       claimDetails: details,
+    }));
+  },
+
+  setWallet: (wallet: object) => {
+    set((state: any) => ({
+      ...state,
+      wallet: wallet,
     }));
   },
 

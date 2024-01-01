@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const StyledContainer = styled.div`
   margin: 0 auto;
+  background-color: 'light-dark(var(--mantine-color-black),var(--mantine-color-white));',
   @media (max-width: 900px) {
     max-width: '100%';
   }

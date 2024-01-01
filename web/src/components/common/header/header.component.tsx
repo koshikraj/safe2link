@@ -10,8 +10,8 @@ import {
   Chip,
 } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { ActionIcon, Switch, useMantineColorScheme } from '@mantine/core';
-import { IconSun, IconMoonStars, IconBrandDiscord, IconBrandGithub } from '@tabler/icons';
+import { Paper, useMantineColorScheme } from '@mantine/core';
+import { IconSun, IconMoonStars, IconBrandGithub, IconWallet, IconBrandTwitter } from '@tabler/icons';
 import { useState, useEffect } from 'react';
 import { Badge } from '@mantine/core';
 import LogoLight from '../../../assets/logo/logo-light.svg';
@@ -25,7 +25,7 @@ import { NetworkUtil } from '../../../logic/networks';
 import useLinkStore from '../../../store/link/link.store';
 import { getProvider } from '../../../logic/web3';
 import classes from './header.component.module.css';
-import { useSafeAuth } from '@/context';
+import { IconBrandTwitterFilled } from '@tabler/icons-react';
 
 const badgeIcons = [
   { ids: ['84531'], img: Base },
@@ -47,7 +47,6 @@ function getIconForId(id) {
 export const Head = (props) => {
   const { setOpened, opened } = props;
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-  // const { chainId, setChainId, network, setNetwork } = useSafeAuth();
   const [network, setNetwork] = useState('');
   const [chainId, setChainId] = useState(84531);
 
@@ -55,7 +54,7 @@ export const Head = (props) => {
 
   // const [ opened, setOpened ] = useState(false);
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     (async () => {
@@ -73,9 +72,8 @@ export const Head = (props) => {
 
   return (
     <AppShell.Header>
-      <nav className={classes.nav}>
         <div className={classes.wrapper}>
-          <Group position="apart" className={classes.maincontainer}>
+          <Group position="apart" className={classes.maincontainer} >
             <Group className={classes.container}>
               <Image
                 onClick={() => {
@@ -89,7 +87,14 @@ export const Head = (props) => {
 
             <Group className={classes.mode}>
               {/* <Group className={classes.container} position="center"> */}
+              <IconWallet
+                    size={30}
+                    stroke={1.5}
+                    onClick={() => navigate(RoutePath.account)}
+                    style={{ cursor: 'pointer' }}
+                  />
               <div className={classes.container}>
+                
                 {dark ? (
                   <IconSun
                     size={24}
@@ -112,7 +117,6 @@ export const Head = (props) => {
 
           {/* </div> */}
         </div>
-      </nav>
     </AppShell.Header>
   );
 };

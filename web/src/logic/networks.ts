@@ -27,7 +27,7 @@ export const networks = {
   },
   mainnet: {
     name: 'Ethereum',
-    type: 'Mainnet',
+    type: 'mainnet',
     chainId: 1,
     url: `https://mainnet.infura.io/v3/${INFURA_API_KEY}`,
     safeService: "https://safe-transaction-mainnet.safe.global",
@@ -37,7 +37,7 @@ export const networks = {
   },
   goerli: {
     name: 'Goerli',
-    type: 'Testnet',
+    type: 'testnet',
     chainId: 5,
     url: `https://goerli.infura.io/v3/${INFURA_API_KEY}`,
     safeService: "https://safe-transaction-goerli.safe.global",
@@ -47,7 +47,7 @@ export const networks = {
   },
   sepolia: {
     name: 'Sepolia',
-    type: 'Testnet',
+    type: 'testnet',
     chainId: 11155111,
     url: `https://eth-sepolia.g.alchemy.com/v2/eCr9bFDzgYgDrox-mnXPPh7_koP-agKo`,
     safeService: "https://safe-transaction-sepolia.safe.global",
@@ -56,8 +56,8 @@ export const networks = {
     easExplorer: "",
   },
   basegoerli: {
-    name: 'Base',
-    type: 'Testnet',
+    name: 'Base Goerli',
+    type: 'testnet',
     chainId: 84531,
     url: `https://base-goerli.g.alchemy.com/v2/K1GZzIiF6-PthdjPtfzvTOMcej2zOWWA`,
     blockExplorer: "https://goerli.basescan.org",
@@ -68,17 +68,7 @@ export const networks = {
 
   base: {
     name: 'Base',
-    type: 'Testnet',
-    chainId: 84531,
-    url: `https://base-mainnet.g.alchemy.com/v2/NTGkSXMuKkoHwQ_W4eNpGlihUScplXYV`,
-    blockExplorer: "https://basescan.org",
-    safeService: "https://safe-transaction-base.safe.global",
-    api: `https://api-goerli.etherscan.io/api?apikey=${ETHERSCAN_API_KEY}`,
-    easExplorer: "",
-  },
-  basemain: {
-    name: 'Base',
-    type: 'Mainnet',
+    type: 'mainnet',
     chainId: 8453,
     url: `https://base-mainnet.g.alchemy.com/v2/NTGkSXMuKkoHwQ_W4eNpGlihUScplXYV`,
     blockExplorer: "https://basescan.org",
@@ -88,7 +78,7 @@ export const networks = {
   },
   optimism: {
     name: 'Optimism',
-    type: 'Mainnet',
+    type: 'mainnet',
     chainId: 10,
     url: `https://optimism-mainnet.infura.io/v3/${INFURA_API_KEY}`,
     blockExplorer: "https://optimistic.etherscan.io",
@@ -98,7 +88,7 @@ export const networks = {
   },
   gnosis: {
     name: 'Gnosis',
-    type: 'Mainnet',
+    type: 'mainnet',
     chainId: 100,
     url: `https://rpc.ankr.com/gnosis`,
     safeService: "https://safe-transaction-gnosis-chain.safe.global",
@@ -108,7 +98,7 @@ export const networks = {
   },
   polygontestnet: {
     name: 'Polygon',
-    type: 'Testnet',
+    type: 'testnet',
     chainId: 80001,
     url: "https://matic-mumbai.chainstacklabs.com",
     safeService: "",
@@ -118,7 +108,7 @@ export const networks = {
   },
   polygon: {
     name: 'Polygon',
-    type: 'Mainnet',
+    type: 'mainnet',
     chainId: 137,
     url: "https://rpc.ankr.com/polygon",
     safeService: "https://safe-transaction-polygon.safe.global",
@@ -128,7 +118,7 @@ export const networks = {
   },
   celo: {
     name: 'Celo',
-    type: 'Mainnet',
+    type: 'mainnet',
     chainId: 42220,
     url: "https://1rpc.io/celo	",
     safeService: "https://safe-transaction-polygon.safe.global",

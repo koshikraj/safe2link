@@ -4,16 +4,16 @@ import { MantineProvider } from '@mantine/core';
 import { AppLayout } from './components';
 import { Navigation } from './navigation';
 import { theme } from './theme';
-import { AuthProvider } from './context';
+import { HashRouter } from 'react-router-dom';
 
 export default function App() {
   return (
-    <MantineProvider theme={theme}>
-      <AuthProvider>
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <HashRouter>
         <AppLayout>
           <Navigation />
         </AppLayout>
-      </AuthProvider>
+        </HashRouter>
     </MantineProvider>
   );
 }
