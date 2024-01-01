@@ -58,7 +58,8 @@ const config: HardhatUserConfig = {
     },
     gnosis: {
       ...sharedNetworkConfig,
-      url: 'https://rpc.gnosischain.com',
+      url: 'https://rpc.ankr.com/gnosis',
+      gas: 12000000, 
     },
     ewc: {
       ...sharedNetworkConfig,
@@ -124,7 +125,19 @@ const config: HardhatUserConfig = {
     deployer: 0,
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      gnosis: ETHERSCAN_API_KEY! 
+    },
+    customChains: [
+      {
+        network: "gnosis",
+        chainId: 100,
+        urls: {
+          apiURL: "https://api.gnosisscan.io/api",
+          browserURL: "https://gnosisscan.io/"
+        }
+      }
+    ]
   },
   gasReporter: {
     enabled: true,
